@@ -36,6 +36,6 @@ class PNGFile(File):
         print('name: ', self.name)
         print('date: ', self.date)
         print('size: ', self.size)
-        print('pages: ', self.width)
-        print('pages: ', self.height)
+        print('width: ', self.width)
+        print('height: ', self.height)
 
