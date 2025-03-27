@@ -9,12 +9,15 @@ class Model:
 
     def create(self, file_type: FILE_TYPE, **params):
         for i, v in params.items():
+            print(params)
             if isinstance(v, str):
-                assert v.strip() == "", "Есть незаполненные поля: " + i
+                print(v)
+                assert v.strip() != "", "Есть незаполненные поля: " + i
         
         file = file_type.value.file_class(**params)
         self.files[self.ID] = file
         self.ID += 1
+        return self.ID-1
 
     def remove(self, id):
         self.files.pop(id)
