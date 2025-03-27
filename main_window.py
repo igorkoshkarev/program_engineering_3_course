@@ -1,7 +1,7 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QScrollArea, QLabel, QComboBox, QVBoxLayout, QHBoxLayout, QWidget, QPushButton
 from PySide6.QtCore import Qt
-from file import FILE_TYPES
+from file import FILE_TYPE
 
 
 class MainWindow(QMainWindow):
@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(1100, 500)
 
         self.file_type_combo_box = QComboBox()
-        self.file_type_combo_box.addItems(FILE_TYPES._member_names_)
+        self.file_type_combo_box.addItems(FILE_TYPE._member_names_)
         self.create_button = QPushButton()
         self.create_button.setText('Создать')
         self.remove_button = QPushButton()
@@ -73,7 +73,6 @@ class MainWindow(QMainWindow):
         self.table_layout.addWidget(self.title_table_widget)
 
         self.setCentralWidget(self.central_widget)
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

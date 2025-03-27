@@ -3,6 +3,9 @@ from collections import namedtuple
 import enum
 
 class File(ABC):
+    PARAMETERS = {'name': str, 'date': str, 'size': int}
+    UNIQUE_PARAMETERS = {}
+
     def __init__(self, name: str, date: str, size: int):
         self.name = name
         self.date = date
@@ -48,6 +51,6 @@ class PNGFile(File):
 
 file_type = namedtuple('FileType', ['name', 'file_class'])
 
-class FILE_TYPES(enum.Enum):
+class FILE_TYPE(enum.Enum):
     PDF = file_type('pdf', PDFFile)
     PNG = file_type('png', PNGFile)
