@@ -1,4 +1,6 @@
 import file
+from main_window import MainWindow
+from model import Model
 
 def get_files(filename: str) -> list[file.File]:
     files = []
@@ -13,6 +15,22 @@ def get_files(filename: str) -> list[file.File]:
             else:
                 raise TypeError
     return files
+
+
+class MainController:
+
+    def __init__(self):
+        self.main_window = MainWindow()
+        self.main_window.create_button.clicked.connect(self.view_create_window)
+        self.main_window.remove_button.clicked.connect(self.remove)
+        self.db = Model()
+    
+    def view_create_window(self):
+        pass
+
+    def remove(self):
+        pass
+
 
 
 if __name__ == '__main__':
