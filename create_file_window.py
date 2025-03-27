@@ -9,7 +9,7 @@ class CreateFileWindow(QMainWindow):
 
     TYPE_WIDGET = {str: QLineEdit, int: QSpinBox}
 
-    def __init__(self, parent):
+    def __init__(self):
 
         super().__init__()
 
@@ -46,10 +46,22 @@ class CreateFileWindow(QMainWindow):
         self.central_widget.setLayout(self.central_layout)
 
         self.setCentralWidget(self.central_widget)
+    
+    def get_file_type(self):
+        return self.TYPE
+    
+    def get_parameters(self):
+        parameters = {}
+        for i, v in self.parameters.items():
+            if isinstance(v, self.TYPE_WIDGET[str]):
+                parameters[i] = v.text()
+            elif isinstance(v, self.TYPE_WIDGET[int]):
+                parameters[i] = v.value()
+        return parameters
 
 class CreatePDFFileWindow(CreateFileWindow):
 
-    TYPE = FILE_TYPE.PDF.value
+    TYPE = FILE_TYPE.PDF
 
 class CreatePNGFileWindow(CreateFileWindow):
 
@@ -58,6 +70,6 @@ class CreatePNGFileWindow(CreateFileWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    m = CreatePNGFileWindow(None)
+    m = CreatePNGFileWindow()
     m.show()
     sys.exit(app.exec())
