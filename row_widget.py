@@ -1,10 +1,12 @@
-import sys
-from PySide6.QtWidgets import QApplication, QCheckBox, QMainWindow, QLabel, QComboBox, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QSizePolicy
+from PySide6.QtWidgets import QCheckBox, QLabel, QHBoxLayout, QWidget
+from PySide6 import QtCore
 
 
 class RowWidget(QWidget):
 
-    def __init__(self, parent, id, file_type, name, date, size):
+    selected = QtCore.Signal(bool, int)
+
+    def __init__(self, id, file_type, name, date, size):
 
         super().__init__()
 
@@ -25,9 +27,10 @@ class RowWidget(QWidget):
 
         self.size_label = QLabel()
         self.size_label.setFixedSize(200, 50)
-        self.size_label.setText(size)
+        self.size_label.setText(str(size))
 
         self.check_box = QCheckBox()
+        self.check_box.stateChanged.connect(self.select_row)
 
         self.central_widget = QWidget()
         self.central_layout = QHBoxLayout()
@@ -37,3 +40,9 @@ class RowWidget(QWidget):
         self.central_layout.addWidget(self.size_label)
         self.central_layout.addWidget(self.check_box)
         self.setLayout(self.central_layout)
+    
+    def select_row(self, state):
+        if state == 2:
+            self.selected.emit(True, self.id)
+        else:
+            self.selected.emit(False, self.id)
