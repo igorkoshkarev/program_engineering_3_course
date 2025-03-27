@@ -94,6 +94,12 @@ class MainWindow(QMainWindow):
         else:
             self.selected_rows.remove(id)
     
+    def remove_row(self, id):
+        row = self.rows_widgets[id]
+        row.deleteLater()
+        if id in self.selected_rows:
+            self.selected_rows.remove(id)
+        
 
 
 if __name__ == '__main__':
