@@ -1,7 +1,8 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QScrollArea, QLabel, QComboBox, QVBoxLayout, QHBoxLayout, QWidget, QPushButton
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 from file import FILE_TYPE
+import row_widget
 
 
 class MainWindow(QMainWindow):
@@ -9,6 +10,9 @@ class MainWindow(QMainWindow):
     def __init__(self):
 
         super().__init__()
+
+        self.rows_widgets = {}
+        self.selected_rows = []
 
         self.setWindowTitle("Таблица файлов")
         self.menu_layout = QHBoxLayout()
@@ -73,9 +77,21 @@ class MainWindow(QMainWindow):
         self.table_layout.addWidget(self.title_table_widget)
 
         self.setCentralWidget(self.central_widget)
+    
+    def get_create_file_type(self):
+        return self.file_type_combo_box.currentText()
+    
+    def add_row(self, id, file_type, name, date, size):
+        new_row = row_widget.RowWidget(id, file_type, name, date, size)
+        new_row.selected.connect(self.select_row)
+        self.rows_widgets[id] = new_row
+        self.table_layout.addWidget(self.rows_widgets[id])
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     m = MainWindow()
     m.show()
+    m.add_row(1, 'sdf', 'sdf', 'sdsf', 'sdf')
     sys.exit(app.exec())
