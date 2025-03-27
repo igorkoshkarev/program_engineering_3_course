@@ -46,3 +46,18 @@ class CreateFileWindow(QMainWindow):
         self.central_widget.setLayout(self.central_layout)
 
         self.setCentralWidget(self.central_widget)
+
+class CreatePDFFileWindow(CreateFileWindow):
+
+    TYPE = FILE_TYPE.PDF.value
+
+class CreatePNGFileWindow(CreateFileWindow):
+
+    TYPE = FILE_TYPE.PNG
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    m = CreatePNGFileWindow(None)
+    m.show()
+    sys.exit(app.exec())
