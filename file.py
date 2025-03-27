@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+from collections import namedtuple
+import enum
 
 class File(ABC):
     def __init__(self, name: str, date: str, size: int):
@@ -11,6 +13,8 @@ class File(ABC):
         pass
 
 class PDFFile(File):
+    UNIQUE_PARAMETERS = {'pages': int}
+
     def __init__(self, name, date, size, pages):
         super().__init__(name, date, size)
         self.type = "pdf"
@@ -25,6 +29,8 @@ class PDFFile(File):
 
 
 class PNGFile(File):
+    UNIQUE_PARAMETERS = {'width': int, 'height': int}
+
     def __init__(self, name, date, size, width, height):
         super().__init__(name, date, size)
         self.type = 'png'
@@ -39,3 +45,9 @@ class PNGFile(File):
         print('width: ', self.width)
         print('height: ', self.height)
 
+
+file_type = namedtuple('FileType', ['name', 'file_class'])
+
+class FILE_TYPES(enum.Enum):
+    PDF = file_type('pdf', PDFFile)
+    PNG = file_type('png', PNGFile)
