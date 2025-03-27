@@ -87,6 +87,13 @@ class MainWindow(QMainWindow):
         self.rows_widgets[id] = new_row
         self.table_layout.addWidget(self.rows_widgets[id])
 
+    @Slot(bool, int)
+    def select_row(self, state, id):
+        if state:
+            self.selected_rows.append(id)
+        else:
+            self.selected_rows.remove(id)
+    
 
 
 if __name__ == '__main__':
