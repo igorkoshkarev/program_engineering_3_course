@@ -15,6 +15,10 @@ class File(ABC):
     def print_all(self):
         pass
 
+    @abstractmethod
+    def get_parameters(self):
+        pass
+
 class PDFFile(File):
     UNIQUE_PARAMETERS = {'pages': int}
 
@@ -29,6 +33,9 @@ class PDFFile(File):
         print('date: ', self.date)
         print('size: ', self.size)
         print('pages: ', self.pages)
+    
+    def get_parameters(self):
+        return [self.type, self.name, self.date, self.size, self.pages]
 
 
 class PNGFile(File):
@@ -47,6 +54,10 @@ class PNGFile(File):
         print('size: ', self.size)
         print('width: ', self.width)
         print('height: ', self.height)
+    
+    def get_parameters(self):
+        return [self.type, self.name, self.date, self.size, self.width, self.height]
+    
 
 
 file_type = namedtuple('FileType', ['name', 'file_class'])
@@ -54,3 +65,9 @@ file_type = namedtuple('FileType', ['name', 'file_class'])
 class FILE_TYPE(enum.Enum):
     PDF = file_type('pdf', PDFFile)
     PNG = file_type('png', PNGFile)
+
+    @staticmethod
+    def get_type_on_name(name):
+        for i in FILE_TYPE._member_map_.values():
+            if i.value.name == name:
+                return i

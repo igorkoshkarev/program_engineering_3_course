@@ -25,10 +25,16 @@ class MainWindow(QMainWindow):
         self.create_button.setText('Создать')
         self.remove_button = QPushButton()
         self.remove_button.setText('Удалить')
+        self.load_button = QPushButton()
+        self.load_button.setText('Загрузить')
+        self.save_button = QPushButton()
+        self.save_button.setText('Сохранить')
 
         self.menu_layout.addWidget(self.file_type_combo_box)
         self.menu_layout.addWidget(self.create_button)
         self.menu_layout.addWidget(self.remove_button)
+        self.menu_layout.addWidget(self.load_button)
+        self.menu_layout.addWidget(self.save_button)
         self.menu_widget = QWidget()
         self.menu_widget.setLayout(self.menu_layout)
 
