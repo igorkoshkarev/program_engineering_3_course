@@ -67,7 +67,9 @@ class FILE_TYPE(enum.Enum):
     PNG = file_type('png', PNGFile)
 
     @staticmethod
-    def get_type_on_name(name):
+    def get_type_on_name(name: str) -> file_type:
         for i in FILE_TYPE._member_map_.values():
             if i.value.name == name:
                 return i
+        else:
+            raise AssertionError('Такого типа файла не существует')

@@ -45,8 +45,8 @@ class MainController:
     
     def create(self):
         file_type = self.create_window.get_file_type()
-        parameters = self.create_window.get_parameters()
-        self.add_element(file_type, *parameters.values())
+        parameters = self.create_window.get_parameters_list()
+        self.add_element(file_type, *parameters)
         self.create_window.close()
         del self.create_window
 

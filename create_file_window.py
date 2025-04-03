@@ -50,13 +50,22 @@ class CreateFileWindow(QMainWindow):
     def get_file_type(self):
         return self.TYPE
     
-    def get_parameters(self):
+    def get_parameters_dict(self):
         parameters = {}
         for i, v in self.parameters.items():
             if isinstance(v, self.TYPE_WIDGET[str]):
                 parameters[i] = v.text()
             elif isinstance(v, self.TYPE_WIDGET[int]):
                 parameters[i] = v.value()
+        return parameters
+    
+    def get_parameters_list(self):
+        parameters = []
+        for i, v in self.parameters.items():
+            if isinstance(v, self.TYPE_WIDGET[str]):
+                parameters.append(v.text())
+            elif isinstance(v, self.TYPE_WIDGET[int]):
+                parameters.append(v.value())
         return parameters
 
 class CreatePDFFileWindow(CreateFileWindow):
