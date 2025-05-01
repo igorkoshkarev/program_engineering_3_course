@@ -9,13 +9,13 @@ import file
 class FileTest(unittest.TestCase):
 
     def test_get_parameters(self):
-        parameters = {'name': 'name.pdf', 'date': '10.10.2003', 'size': 1024, 'pages': 100}
+        parameters = {'name': 'name.pdf', 'date': '10.10.2003', 'size': 1024}
         f = file.PDFFile(**parameters)
-        self.assertEqual(f.get_parameters(), ['pdf', 'name.pdf', '10.10.2003', 1024, 100])
+        self.assertEqual(f.get_parameters(), ['pdf', 'name.pdf', '10.10.2003', 1024])
 
-        parameters = {'name': 'name.png', 'date': '10.10.2003', 'size': 1024, 'width': 100, 'height': 50}
+        parameters = {'name': 'name.png', 'date': '10.10.2003', 'size': 1024}
         f = file.PNGFile(**parameters)
-        self.assertEqual(f.get_parameters(), ['png', 'name.png', '10.10.2003', 1024, 100, 50])
+        self.assertEqual(f.get_parameters(), ['png', 'name.png', '10.10.2003', 1024])
 
     def test_get_class_by_name(self):
         self.assertEqual(file.FILE_TYPE.PDF, file.FILE_TYPE.get_type_on_name('pdf'))

@@ -13,13 +13,13 @@ class ModelTest(unittest.TestCase):
         db = model.Model()
         file_type = file.FILE_TYPE.PDF
 
-        parameters = {'name': 'file.pdf', 'date': '10.12.2023', 'size': 1024, 'pages': 10}
+        parameters = {'name': 'file.pdf', 'date': '10.12.2023', 'size': 1024}
         id = db.create(file_type, **parameters)
         file_1 = db.select_by_id(id)
         file_2 = file.PDFFile(**parameters)
         self.assertEqual(file_1.get_parameters(), file_2.get_parameters())
 
-        parameters = ['file.pdf', '10.12.2023', 1024, 10]
+        parameters = ['file.pdf', '10.12.2023', 1024]
         id = db.create(file_type, *parameters)
         file_1 = db.select_by_id(id)
         file_2 = file.PDFFile(*parameters)
@@ -29,13 +29,13 @@ class ModelTest(unittest.TestCase):
         db = model.Model()
         file_type = file.FILE_TYPE.PNG
         
-        parameters = {'name': 'file.png', 'date': '10.12.2023', 'size': 1024, 'width': 100, 'height': 50}
+        parameters = {'name': 'file.png', 'date': '10.12.2023', 'size': 1024}
         id = db.create(file_type, **parameters)
         file_1 = db.select_by_id(id)
         file_2 = file.PNGFile(**parameters)
         self.assertEqual(file_1.get_parameters(), file_2.get_parameters())
 
-        parameters = ['file.pdf', '10.12.2023', 1024, 100, 50]
+        parameters = ['file.pdf', '10.12.2023', 1024]
         id = db.create(file_type, *parameters)
         file_1 = db.select_by_id(id)
         file_2 = file.PNGFile(*parameters)
@@ -44,8 +44,8 @@ class ModelTest(unittest.TestCase):
     def test_wrong_create(self):
         db = model.Model()
 
-        parameters_dict = {'name': 'file.png', 'date': '10.12.2023', 'size': 1024, 'width': 100, 'height': 50}
-        parameters_list = ['file.pdf', '10.12.2023', 1024, 10]
+        parameters_dict = {'name': 'file.png', 'date': '10.12.2023', 'size': 1024}
+        parameters_list = ['file.pdf', '10.12.2023', 1024]
 
         with self.assertRaises(AssertionError):
             db.create(*parameters_list, **parameters_dict)
@@ -58,7 +58,7 @@ class ModelTest(unittest.TestCase):
         db.remove(1000)
 
         file_type = file.FILE_TYPE.PDF
-        parameters = {'name': 'file.pdf', 'date': '10.12.2023', 'size': 1024, 'pages': 10}
+        parameters = {'name': 'file.pdf', 'date': '10.12.2023', 'size': 1024}
 
         id = db.create(file_type, **parameters)
         db.remove(id)
@@ -77,10 +77,10 @@ class ModelTest(unittest.TestCase):
         db = model.Model()
         
         file_type1 = file.FILE_TYPE.PDF
-        parameters1 = {'name': 'file.png', 'date': '10.12.2023', 'size': 1024, 'pages': 10}
+        parameters1 = {'name': 'file.png', 'date': '10.12.2023', 'size': 1024}
 
         file_type2 = file.FILE_TYPE.PNG
-        parameters2 = {'name': 'file.png', 'date': '10.12.2023', 'size': 1024, 'width': 100, 'height': 50}
+        parameters2 = {'name': 'file.png', 'date': '10.12.2023', 'size': 1024}
 
         id1 = db.create(file_type1, **parameters1)
         id2 = db.create(file_type2, **parameters2)
