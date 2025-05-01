@@ -6,6 +6,8 @@ import create_file_window
 from PySide6.QtWidgets import QApplication
 from PySide6.QtWidgets import QFileDialog
 import csv
+from csv_validator import FileCSVValidator
+from csvvalidator import RecordError
 
 
 def get_files(filename: str) -> list[file.File]:
@@ -28,6 +30,7 @@ class MainController:
     def __init__(self):
         self.app = QApplication(sys.argv)
         self.main_window = MainWindow()
+        self.csv_validator = FileCSVValidator()
         self.main_window.create_button.clicked.connect(self.view_create_window)
         self.main_window.remove_button.clicked.connect(self.remove_elements)
         self.main_window.load_button.clicked.connect(self.load)
@@ -61,7 +64,12 @@ class MainController:
         path = path[0]
         if path.endswith('.csv'):
             with open(path, 'r', newline='') as f:
-                reader = csv.DictReader(f)
+                try:
+                    self.validate_csv(csv.reader(f, delimiter=','))
+                except RecordError:
+                    return 0
+            with open(path, 'r', newline='') as f:
+                reader = csv.DictReader(f, delimiter=',')
                 for file_element in reader:
                     file_type_name = file_element['type']
                     file_name = file_element['name']
@@ -84,6 +92,11 @@ class MainController:
     def add_element(self, file_type, name, date, size, *parameters):
         id = self.db.create(file_type, name, date, size, *parameters)
         self.main_window.add_row(id, file_type.value.name, name, date, size)
+    
+    def validate_csv(self, csv_file):
+        problems = self.csv_validator.validate(csv_file)
+        if problems:
+            raise RecordError(problems[0]['message'])
 
     def run(self):
         self.main_window.show()
