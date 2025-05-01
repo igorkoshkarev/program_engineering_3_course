@@ -4,60 +4,35 @@ import enum
 
 class File(ABC):
     PARAMETERS = {'name': str, 'date': str, 'size': int}
-    UNIQUE_PARAMETERS = {}
 
     def __init__(self, name: str, date: str, size: int):
+        self.type = None
         self.name = name
         self.date = date
         self.size = size
     
-    @abstractmethod
-    def print_all(self):
-        pass
-
-    @abstractmethod
-    def get_parameters(self):
-        pass
-
-class PDFFile(File):
-    UNIQUE_PARAMETERS = {'pages': int}
-
-    def __init__(self, name, date, size, pages):
-        super().__init__(name, date, size)
-        self.type = "pdf"
-        self.pages = pages
-    
     def print_all(self):
         print('type: ', self.type)
         print('name: ', self.name)
         print('date: ', self.date)
         print('size: ', self.size)
-        print('pages: ', self.pages)
-    
+
     def get_parameters(self):
-        return [self.type, self.name, self.date, self.size, self.pages]
+        return [self.type, self.name, self.date, self.size]
+    
+    def get_parameters_dict(self):
+        return {'type': self.type, 'name': self.name, 'date': self.date, 'size': self.size}
+
+class PDFFile(File):
+    def __init__(self, name, date, size):
+        super().__init__(name, date, size)
+        self.type = "pdf"
 
 
 class PNGFile(File):
-    UNIQUE_PARAMETERS = {'width': int, 'height': int}
-
-    def __init__(self, name, date, size, width, height):
+    def __init__(self, name, date, size):
         super().__init__(name, date, size)
         self.type = 'png'
-        self.width = width
-        self.height = height
-    
-    def print_all(self):
-        print('type: ', self.type)
-        print('name: ', self.name)
-        print('date: ', self.date)
-        print('size: ', self.size)
-        print('width: ', self.width)
-        print('height: ', self.height)
-    
-    def get_parameters(self):
-        return [self.type, self.name, self.date, self.size, self.width, self.height]
-    
 
 
 file_type = namedtuple('FileType', ['name', 'file_class'])
@@ -65,6 +40,13 @@ file_type = namedtuple('FileType', ['name', 'file_class'])
 class FILE_TYPE(enum.Enum):
     PDF = file_type('pdf', PDFFile)
     PNG = file_type('png', PNGFile)
+
+    @staticmethod
+    def get_all_string_types() -> str:
+        a = []
+        for i in FILE_TYPE:
+            a.append(i.value.name)
+        return a
 
     @staticmethod
     def get_type_on_name(name: str) -> file_type:

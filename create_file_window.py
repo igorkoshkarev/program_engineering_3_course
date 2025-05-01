@@ -1,11 +1,8 @@
 import sys
 from PySide6.QtWidgets import QApplication, QLineEdit, QMainWindow, QSpinBox, QScrollArea, QLabel, QComboBox, QVBoxLayout, QHBoxLayout, QWidget, QPushButton
-from PySide6.QtCore import Qt
 from file import FILE_TYPE
 
 class CreateFileWindow(QMainWindow):
-
-    TYPE: FILE_TYPE
 
     TYPE_WIDGET = {str: QLineEdit, int: QSpinBox}
 
@@ -19,9 +16,15 @@ class CreateFileWindow(QMainWindow):
 
         self.setMinimumSize(300, 300)
 
+        self.file_type = QComboBox()
+        self.file_type.addItems(FILE_TYPE.get_all_string_types())
+
+        self.central_layout.addWidget(QLabel("Тип файла: "))
+        self.central_layout.addWidget(self.file_type)
+
         self.parameters = {}
 
-        for i, v in self.TYPE.value.file_class.PARAMETERS.items():
+        for i, v in {'name': str, 'date': int, 'size': int}.items():
             l = QLabel()
             l.setText(i)
             w = self.TYPE_WIDGET[v]()
@@ -29,15 +32,6 @@ class CreateFileWindow(QMainWindow):
 
             self.central_layout.addWidget(l)
             self.central_layout.addWidget(w)
-
-        for i, v in self.TYPE.value.file_class.UNIQUE_PARAMETERS.items():
-            l = QLabel()
-            l.setText(i)
-            w = self.TYPE_WIDGET[v]()
-            self.parameters[i] = w
-
-            self.central_layout.addWidget(l)
-            self.central_layout.addWidget(self.parameters[i])
 
         self.create_button = QPushButton()
         self.create_button.setText('Создать')
@@ -48,7 +42,7 @@ class CreateFileWindow(QMainWindow):
         self.setCentralWidget(self.central_widget)
     
     def get_file_type(self):
-        return self.TYPE
+        return FILE_TYPE.get_type_on_name(self.file_type.currentText())
     
     def get_parameters_dict(self):
         parameters = {}
@@ -67,18 +61,3 @@ class CreateFileWindow(QMainWindow):
             elif isinstance(v, self.TYPE_WIDGET[int]):
                 parameters.append(v.value())
         return parameters
-
-class CreatePDFFileWindow(CreateFileWindow):
-
-    TYPE = FILE_TYPE.PDF
-
-class CreatePNGFileWindow(CreateFileWindow):
-
-    TYPE = FILE_TYPE.PNG
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    m = CreatePNGFileWindow()
-    m.show()
-    sys.exit(app.exec())

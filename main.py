@@ -25,9 +25,6 @@ def get_files(filename: str) -> list[file.File]:
 
 class MainController:
 
-    CREATE_WINDOW_CLASS = {file.FILE_TYPE.PDF.name: create_file_window.CreatePDFFileWindow, 
-                           file.FILE_TYPE.PNG.name: create_file_window.CreatePNGFileWindow}
-
     def __init__(self):
         self.app = QApplication(sys.argv)
         self.main_window = MainWindow()
@@ -38,13 +35,13 @@ class MainController:
         self.db = Model()
     
     def view_create_window(self):
-        self.file_type = self.main_window.get_create_file_type()
-        self.create_window = self.CREATE_WINDOW_CLASS[self.file_type]()
+        self.create_window = create_file_window.CreateFileWindow()
         self.create_window.create_button.clicked.connect(self.create)
         self.create_window.show()
     
     def create(self):
         file_type = self.create_window.get_file_type()
+        print(file_type)
         parameters = self.create_window.get_parameters_list()
         self.add_element(file_type, *parameters)
         self.create_window.close()
@@ -64,20 +61,25 @@ class MainController:
         path = path[0]
         if path.endswith('.csv'):
             with open(path, 'r', newline='') as f:
-                reader = csv.reader(f, delimiter=' ')
+                reader = csv.DictReader(f)
                 for file_element in reader:
-                    file_type_name, parameters = file_element[0], file_element[1:]
+                    file_type_name = file_element['type']
+                    file_name = file_element['name']
+                    file_date = file_element['date']
+                    file_size = file_element['size']
                     file_type = file.FILE_TYPE.get_type_on_name(file_type_name)
-                    self.add_element(file_type, *parameters)
+                    self.add_element(file_type, file_name, file_date, file_size)
 
     def save(self):
         path = QFileDialog.getSaveFileName(filter='*.csv')
         path = path[0]
         if path.endswith('.csv'):
-            with open(path, 'w', newline='') as f:
-                writer = csv.writer(f, delimiter=' ')
+            with open(path, 'w', newline='') as csvfile:
+                fieldnames = ["type", "name", "date", "size"]
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
                 for i in self.db.select_all().values():
-                    writer.writerow(i.get_parameters())
+                    writer.writerow(i.get_parameters_dict())
 
     def add_element(self, file_type, name, date, size, *parameters):
         id = self.db.create(file_type, name, date, size, *parameters)

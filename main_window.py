@@ -19,8 +19,6 @@ class MainWindow(QMainWindow):
 
         self.setMinimumSize(1100, 500)
 
-        self.file_type_combo_box = QComboBox()
-        self.file_type_combo_box.addItems(FILE_TYPE._member_names_)
         self.create_button = QPushButton()
         self.create_button.setText('Создать')
         self.remove_button = QPushButton()
@@ -30,7 +28,6 @@ class MainWindow(QMainWindow):
         self.save_button = QPushButton()
         self.save_button.setText('Сохранить')
 
-        self.menu_layout.addWidget(self.file_type_combo_box)
         self.menu_layout.addWidget(self.create_button)
         self.menu_layout.addWidget(self.remove_button)
         self.menu_layout.addWidget(self.load_button)
@@ -84,10 +81,7 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(self.central_widget)
     
-    def get_create_file_type(self):
-        return self.file_type_combo_box.currentText()
-    
-    def add_row(self, id, file_type, name, date, size):
+    def add_row(self, id: int, file_type: FILE_TYPE, name: str, date, size):
         new_row = row_widget.RowWidget(id, file_type, name, date, size)
         new_row.selected.connect(self.select_row)
         self.rows_widgets[id] = new_row

@@ -23,7 +23,7 @@ class RowWidget(QWidget):
 
         self.date_label = QLabel()
         self.date_label.setFixedSize(200, 50)
-        self.date_label.setText(date)
+        self.date_label.setText(str(date))
 
         self.size_label = QLabel()
         self.size_label.setFixedSize(200, 50)
